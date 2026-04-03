@@ -356,5 +356,8 @@ MigrationBackup/
 
 # React build output (rebuilt from source)
 web/dist/
+
+# Built TUI binary
+bin/
 docs
 .playwright-mcp
