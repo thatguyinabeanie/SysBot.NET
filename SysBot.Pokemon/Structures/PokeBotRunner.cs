@@ -1,6 +1,7 @@
 using PKHeX.Core;
 using SysBot.Base;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,6 +23,10 @@ public interface IPokeBotRunner
     BotSource<PokeBotState>? GetBot(PokeBotState state);
     PokeRoutineExecutorBase CreateBotFromConfig(PokeBotState cfg);
     bool SupportsRoutine(PokeRoutineType pokeRoutineType);
+
+    int GetQueueCount(PokeRoutineType type);
+    int GetTotalQueueCount();
+    bool GetCanQueue();
 }
 
 public abstract class PokeBotRunner<T>(PokeTradeHub<T> hub, BotFactory<T> Factory)
@@ -119,4 +124,9 @@ public abstract class PokeBotRunner<T>(PokeTradeHub<T> hub, BotFactory<T> Factor
     void IPokeBotRunner.Remove(IConsoleBotConfig state, bool callStop) => Remove(state, callStop);
     public void Add(PokeRoutineExecutorBase newbot) => Add((RoutineExecutor<PokeBotState>)newbot);
     public bool SupportsRoutine(PokeRoutineType t) => Factory.SupportsRoutine(t);
+
+    // Queue count methods for Web API integration
+    public int GetQueueCount(PokeRoutineType type) => Hub.Queues.GetQueue(type).Count;
+    public int GetTotalQueueCount() => Hub.Queues.AllQueues.Sum(q => q.Count);
+    public bool GetCanQueue() => Hub.Queues.Info.GetCanQueue();
 }

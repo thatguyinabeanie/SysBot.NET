@@ -353,3 +353,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# React build output (rebuilt from source)
+web/dist/
+docs
+.playwright-mcp
